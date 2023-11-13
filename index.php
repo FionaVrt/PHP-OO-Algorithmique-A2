@@ -37,7 +37,7 @@ class Hero extends Character {
 
     public function cheat() {
         // Public method for cheating
-        return rand(0, 1) == 1; // 50% chance of cheating
+        return rand(0, 1) == 1; // 50% de chace de gagné 
     }
 }
 
@@ -79,7 +79,7 @@ class Game {
             echo $enemy->getName() . " has " . $enemy->getMarbles() . " marbles." . PHP_EOL;
 
             if ($guess == $isPair) {
-                // You win
+                
                 $totalMarbles += $enemy->getMarbles() + $hero->getGain();
                 echo "You guessed correctly and won the round!" . PHP_EOL;
                 $score += 1; // Augmenter le score en cas de victoire
