@@ -89,29 +89,40 @@ class Game {
             $guess = self::generateRandomNumber(0, 1); 
             $isPair = self::checkEven($enemy->getMarbles());
 
+            // Ces lignes d'écho affichent le numéro du round, les noms et le nombre de billes du héros 
+            // et de l'ennemi à chaque itération du jeu.
             echo "Round " . ($currentRound + 1) . " - " . $hero->getName() . " vs. " . $enemy->getName() . PHP_EOL;
             echo $hero->getName() . " has " . $totalMarbles . " marbles." . PHP_EOL;
             echo $enemy->getName() . " has " . $enemy->getMarbles() . " marbles." . PHP_EOL;
 
+
+// Cette condition vérifie si la supposition du joueur est correcte par rapport à la parité du nombre de billes de l'ennemi, puis ajuste le nombre total de billes du héros, affiche 
+// un message de victoire pour le round et incrémente le score en cas de succès.
             if ($guess == $isPair) {
                 
                 $totalMarbles += $enemy->getMarbles() + $hero->getGain();
                 echo "You guessed correctly and won the round!" . PHP_EOL;
-                $score += 1; // Augmenter le score en cas de victoire
+                $score += 1; 
             } else {
-                // You lose
+                // ajuste le nombre total de billes du héros en soustrayant le nombre de billes de l'ennemi 
+                // et la perte du héros, puis affiche un message de défaite pour le tour.
                 $totalMarbles -= $enemy->getMarbles() - $hero->getLoss();
                 echo "Vous vous êtes trompé et vous avez perdu la manche." . PHP_EOL;
             }
 
+            // condition vérifie si le nombre total de billes du héros est inférieur ou égal à zéro, 
+            // affiche un message de fin de jeu indiquant la perte de toutes les billes, et met fin à la partie.
             if ($totalMarbles <= 0) {
-                echo "Game over. You lost all your marbles." . PHP_EOL;
+                echo "Fin de la partie. Vous avez perdu toutes vos billes." . PHP_EOL;
                 return;
             }
 
             $currentRound++;
         }
-
+        // condition vérifie si le nombre total de billes du héros est supérieur ou égal à 1. Si c'est le cas, elle affiche 
+        // un message de félicitations pour avoir remporté le jeu avec un gain imaginaire en wons sud-coréens et affiche le score du joueur.
+        //  Sinon, elle affiche un message indiquant que le joueur 
+        // n'a pas pu conserver au moins une bille, mettant fin à la partie.
         if ($totalMarbles >= 1) {
             echo "Félicitations, vous avez remporté le jeu et gagné 45,6 milliards de wons sud-coréens !" . PHP_EOL;
             echo "Votre score est de: " . $score . " out of " . $rounds . " rounds." . PHP_EOL;
@@ -121,19 +132,27 @@ class Game {
     }
 }
 
-// Sample usage
+// crée un tableau de personnages avec trois instances de la classe Hero, chacune représentant un personnage du jeu avec un nom,
+//  un nombre initial de billes, un gain et une perte spécifiques.
 $characters = [
     new Hero("Seong Gi-hun", 15, 1, 2),
     new Hero("Kang Sae-byeok", 25, 2, 1),
     new Hero("Cho Sang-woo", 35, 3, 0)
 ];
 
+// crée un tableau vide destiné à stocker des ennemis (instances de la classe Enemy) dans un contexte de jeu.
+
 $enemies = [];
+
+// boucle for crée un tableau d'ennemis avec 20 instances de la classe Enemy, 
+// chaque ennemi étant nommé "Opponent" suivi du numéro de l'itération, et ayant un nombre de billes 
+// et un âge générés aléatoirement dans des plages spécifiées.
 
 for ($i = 1; $i <= 20; $i++) {
     $enemies[] = new Enemy("Opponent" . $i, rand(1, 20), rand(1, 99));
 }
 
+// ligne génère un niveau de difficulté aléatoire entre 1 et 3, puis lance une partie en utilisant la méthode statique playGame
 $difficultyLevel = Game::generateRandomNumber(1, 3);
 
 Game::playGame($characters[Game::generateRandomNumber(0, count($characters) - 1)], $enemies, $difficultyLevel);
