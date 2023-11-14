@@ -1,11 +1,15 @@
 <?php
-
+//  class représent les personnages du jeu. La classe Character 
+// est la classe de base qui contient les propriétés communes à tous les personnages, 
+//  telles que le nom, le nombre de billes, le gain et la perte.
 class Character {
     protected $name;
     protected $marbles;
     protected $gain;
     protected $loss;
 
+    // cette fonction constructrice initialise les propriétés d'un 
+    // objet avec les valeurs fournies pour le nom, les billes, le gain et la perte.
     public function __construct($name, $marbles, $gain, $loss) {
         $this->name = $name;
         $this->marbles = $marbles;
@@ -13,6 +17,7 @@ class Character {
         $this->loss = $loss;
     }
 
+    // Ces fonctions retournent respectivement le nom, le nombre de billes, le gain et la perte d'un objet.
     public function getName() {
         return $this->name;
     }
@@ -29,49 +34,59 @@ class Character {
         return $this->loss;
     }
 }
-
+// la classe Character et utilise le constructeur de la classe parent (Character) 
+// pour initialiser les propriétés de l'objet Hero avec les valeurs fournies.
 class Hero extends Character {
     public function __construct($name, $marbles, $gain, $loss) {
         parent::__construct($name, $marbles, $gain, $loss);
     }
-
+    // fonction retourne vrai avec une probabilité de 50%, simulant une tricherie.
     public function cheat() {
-        // Public method for cheating
-        return rand(0, 1) == 1; // 50% de chace de gagné 
+        return rand(0, 1) == 1; 
     }
 }
-
+// class Enemy étend la class Character et possède une propriété privée supplémentaire appelée $age.
 class Enemy extends Character {
     private $age;
 
+    // constructeur initialise un objet de la classe Enemy avec un nom, un nombre de billes, et un âge, en utilisant le constructeur de la classe parent (Character) pour les propriétés 
+    // communes et en attribuant la valeur de l'âge à la propriété privée $age.
     public function __construct($name, $marbles, $age) {
         parent::__construct($name, $marbles, 0, 0);
         $this->age = $age;
     }
 
+    // fonction retourne l'âge d'un objet Enemy.
     public function getAge() {
         return $this->age;
     }
 }
-
+// possède une méthode statique, generateRandomNumber, 
+// qui génère et retourne un nombre aléatoire dans la plage spécifiée.
 class Game {
     public static function generateRandomNumber($min, $max) {
         return rand($min, $max);
     }
-
+    // méthode statique checkEven vérifie si un nombre 
+    // donné est pair, et retourne vrai s'il l'est, sinon faux.
     public static function checkEven($number) {
         return $number % 2 == 0;
     }
 
+    // méthode statique playGame initialise les variables pour 
+    // le nombre total de billes du héros, le nombre de 
+    // rounds basé sur le niveau de difficulté, le round actuel, et le score du jeu.
     public static function playGame($hero, $enemies, $difficultyLevel) {
         $totalMarbles = $hero->getMarbles();
         $rounds = $difficultyLevel;
         $currentRound = 0;
-        $score = 0; // système de score
-
+        $score = 0; 
+        // cette boucle while, à chaque itération, un ennemi est sélectionné aléatoirement 
+        // parmi la liste d'ennemis, une supposition est générée aléatoirement, et la variable $isPair 
+        // est évaluée en fonction de la parité du nombre de billes de l'ennemi.
         while ($currentRound < $rounds) {
             $enemy = $enemies[self::generateRandomNumber(0, count($enemies) - 1)];
-            $guess = self::generateRandomNumber(0, 1); // Randomly guess 'pair' or 'impair'
+            $guess = self::generateRandomNumber(0, 1); 
             $isPair = self::checkEven($enemy->getMarbles());
 
             echo "Round " . ($currentRound + 1) . " - " . $hero->getName() . " vs. " . $enemy->getName() . PHP_EOL;
